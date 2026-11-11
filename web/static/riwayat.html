@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Riwayat — Persentation Coach</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/app.css">
+<link rel="stylesheet" href="/static/css/latihan.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <linearGradient id="gg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff7dc"/><stop offset=".5" stop-color="#e9b75f"/><stop offset="1" stop-color="#b98a3a"/></linearGradient>
+</defs></svg>
+<main class="frame">
+  <header id="nav" class="nav"></header>
+  <div class="page"><div class="wrap">
+    <div class="h-row"><div><h1 class="page-title sm">Riwayat latihan</h1><p class="lead">Pantau perkembangan skormu dari sesi ke sesi. Klik sesi untuk melihat detail dan mengunduh PDF.</p></div><a class="btn solid" href="/latihan">Latihan baru</a></div>
+    <div id="prog" class="prog" hidden><div class="sec">Perkembangan skor total</div><svg id="chart" viewBox="0 0 600 150" preserveAspectRatio="none" role="img" aria-label="Grafik skor total"></svg></div>
+    <div class="hist" id="list"></div>
+  </div></div>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="/static/js/shared.js"></script>
+<script src="/static/js/hasil.js"></script>
+<script src="/static/js/riwayat.js"></script>
+</body>
+</html>

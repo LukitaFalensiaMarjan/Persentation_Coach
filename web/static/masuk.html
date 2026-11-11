@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Masuk — Persentation Coach</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/app.css">
+</head>
+<body>
+<main class="frame">
+  <header id="nav" class="nav"></header>
+  <div class="page"><div class="auth">
+    <div><h1>Selamat datang<br>kembali</h1><p class="lead">Masuk untuk melanjutkan latihan, melihat riwayat, dan membuka laporan presentasi Anda.</p></div>
+    <form class="card" id="form" novalidate>
+      <div class="field"><label for="username">Username</label><input id="username" name="username" autocomplete="username" required></div>
+      <div class="field"><label for="password">Password</label><input id="password" name="password" type="password" autocomplete="current-password" required></div>
+      <a class="forgot" href="/lupa-password">Lupa password?</a>
+      <p class="msg" id="msg" role="alert"></p>
+      <button class="btn solid" type="submit">Masuk</button>
+      <div class="sep">atau</div>
+      <div class="gbtn" id="gbtn"></div>
+      <p class="alt">Belum punya akun? <a href="/daftar">Daftar</a></p>
+    </form>
+  </div></div>
+</main>
+<script src="/static/js/shared.js"></script>
+<script src="/static/js/auth.js"></script>
+</body>
+</html>

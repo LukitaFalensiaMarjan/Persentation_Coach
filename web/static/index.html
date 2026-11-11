@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Persentation Coach</title>
+<meta name="description" content="Pelatih presentasi berbasis kamera untuk mahasiswa: umpan balik bahasa tubuh real-time, laporan PDF, dan konsultasi chatbot.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/app.css">
+<link rel="stylesheet" href="/static/css/landing.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <linearGradient id="gg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff7dc"/><stop offset=".5" stop-color="#e9b75f"/><stop offset="1" stop-color="#b98a3a"/></linearGradient>
+</defs></svg>
+
+<main class="frame" id="frame">
+  <div class="bgfx"></div>
+  <canvas id="orb" aria-hidden="true"></canvas>
+  <header id="nav" class="nav"></header>
+  <div class="counter" id="counter">001 / 005</div>
+  <div class="dots" aria-hidden="true">••</div>
+
+  <!-- 001 hero -->
+  <section class="hero-panel" id="s0" aria-label="Beranda">
+    <h1 class="t-head rv">Presentasi lebih<br>percaya diri</h1>
+    <div>
+      <p class="t-sub rv">Pelatih presentasi berbasis kamera untuk mahasiswa. Cukup dengan webcam, dapatkan umpan balik bahasa tubuh secara langsung.</p>
+      <div class="btns rv">
+        <a class="btn solid" id="startBtn" href="/daftar">Mulai berlatih</a>
+        <button class="btn ghost" data-go="2">Lihat fitur</button>
+      </div>
+    </div>
+  </section>
+  <p class="hero-low" id="s0low">Latihan mandiri yang objektif, tanpa alat tambahan dan tanpa perlu dosen di samping Anda.</p>
+
+  <!-- 002 pernyataan -->
+  <section class="stmt" id="s1" aria-label="Tentang">
+    <h2 class="t-head">Pelatih presentasi berbasis kamera untuk mahasiswa.</h2>
+    <p>Membaca 17 titik tubuh dan mengenali 7 gestur, tanpa terpengaruh latar belakang, pakaian, atau ruangan.</p>
+  </section>
+
+  <!-- 003 fitur -->
+  <section class="panel" id="s2" aria-label="Fitur">
+    <div class="top rv"><h2 class="t-head">Temukan<br>fitur kami</h2><p class="t-sub">Semua yang Anda butuhkan untuk berlatih, dalam satu tempat.</p></div>
+    <div class="cards c3">
+      <article class="svc rv">
+        <div class="ico"><svg viewBox="0 0 120 120" class="thin"><circle cx="60" cy="20" r="9"/><path d="M60 36V80M34 48H86M34 48L22 72M86 48L98 68L108 52M60 80L44 106M60 80L76 106"/><circle cx="34" cy="48" r="3.5"/><circle cx="86" cy="48" r="3.5"/><circle cx="60" cy="80" r="3.5"/><circle cx="98" cy="68" r="3.5"/></svg></div>
+        <div><h3>Analisis gestur real-time</h3><p>Kamera membaca 17 titik tubuh dan mengenali 7 kondisi bahasa tubuh Anda secara langsung, lengkap dengan peringatan di layar.</p></div>
+      </article>
+      <article class="svc rv">
+        <div class="ico"><svg viewBox="0 0 120 120" class="thin"><path d="M30 14H66L88 36V106H30Z"/><path d="M66 14V36H88"/><path d="M42 56H64M42 70H58"/><path d="M62 92L112 66L96 108L84 94Z"/><path d="M84 94L112 66"/></svg></div>
+        <div><h3>Laporan PDF dan Telegram</h3><p>Skor per aspek, timeline, dan saran perbaikan dibuat menjadi PDF lalu dikirim ke bot Telegram pribadi Anda.</p></div>
+      </article>
+      <article class="svc rv">
+        <div class="ico"><svg viewBox="0 0 120 120" class="thin"><path d="M26 22H94A10 10 0 0 1 104 32V74A10 10 0 0 1 94 84H56L36 104V84H26A10 10 0 0 1 16 74V32A10 10 0 0 1 26 22Z"/><circle cx="40" cy="53" r="3.5"/><circle cx="60" cy="53" r="3.5"/><circle cx="80" cy="53" r="3.5"/></svg></div>
+        <div><h3>Konsultasi chatbot</h3><p>Tanyakan apa pun tentang latihan Anda. Jawaban berdasarkan data sesi sendiri dan khusus untuk topik presentasi.</p></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- 004 cara kerja -->
+  <section class="panel" id="s3" aria-label="Cara kerja">
+    <div class="top rv"><h2 class="t-head">Cara<br>kerjanya</h2><p class="t-sub">Empat langkah sederhana dari menyalakan kamera sampai tahu apa yang harus diperbaiki.</p></div>
+    <div class="cards c4">
+      <article class="svc rv"><div class="num">01</div><div><h3>Pilih durasi</h3><p>Tentukan lama latihan, lalu tekan Mulai Latihan.</p></div></article>
+      <article class="svc rv"><div class="num">02</div><div><h3>Berlatih di depan kamera</h3><p>Sistem mendeteksi gestur secara real-time sampai waktu habis.</p></div></article>
+      <article class="svc rv"><div class="num">03</div><div><h3>Lihat hasil dan laporan</h3><p>Skor muncul langsung, dan bisa diunduh sebagai PDF atau dikirim ke Telegram.</p></div></article>
+      <article class="svc rv"><div class="num">04</div><div><h3>Konsultasi</h3><p>Tanya chatbot bagaimana memperbaiki skor yang masih rendah.</p></div></article>
+    </div>
+  </section>
+
+  <!-- 005 ajakan -->
+  <section class="cta" id="s4" aria-label="Mulai">
+    <h2 class="t-head">Siap berlatih?</h2>
+    <p>Daftar gratis dan mulai sesi latihan pertama Anda hari ini.</p>
+    <div class="btns" id="ctaBtns">
+      <a class="btn solid" href="/daftar">Daftar sekarang</a>
+      <a class="btn ghost" href="/masuk">Masuk</a>
+    </div>
+  </section>
+
+  <button class="share" id="share"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1"><circle cx="9.5" cy="2.5" r="1.5"/><circle cx="2.5" cy="6" r="1.5"/><circle cx="9.5" cy="9.5" r="1.5"/><path d="M3.8 5.3l4.4-2.1M3.8 6.7l4.4 2.1"/></svg>Bagikan</button>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="/static/js/shared.js"></script>
+<script src="/static/js/orb.js"></script>
+<script src="/static/js/landing.js"></script>
+</body>
+</html>

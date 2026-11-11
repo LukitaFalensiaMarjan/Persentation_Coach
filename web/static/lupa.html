@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lupa password — Persentation Coach</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/app.css">
+</head>
+<body>
+<main class="frame">
+  <header id="nav" class="nav"></header>
+  <div class="page"><div class="auth">
+    <div><h1>Lupa<br>password?</h1><p class="lead">Masukkan email akunmu. Kami akan mengirim tautan untuk membuat password baru. Tautannya berlaku 1 jam.</p></div>
+    <form class="card" id="form" novalidate>
+      <h2 class="card-title">Atur ulang password</h2>
+      <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" placeholder="email yang kamu daftarkan" required></div>
+      <p class="msg" id="msg" role="alert"></p>
+      <button class="btn solid" type="submit">Kirim tautan reset</button>
+      <p class="alt">Ingat password? <a href="/masuk">Masuk</a></p>
+    </form>
+  </div></div>
+</main>
+<script src="/static/js/shared.js"></script>
+<script src="/static/js/lupa.js"></script>
+</body>
+</html>

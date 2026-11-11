@@ -1,0 +1,35 @@
+/* Popup chatbot konsultasi (melayang di kanan bawah) */
+.chat-pop { position: fixed; z-index: 70; right: 30px; bottom: 122px; width: 380px; height: min(560px, calc(100vh - 150px)); display: flex; flex-direction: column;
+  background: var(--panel-2); border: 1px solid rgba(255, 255, 255, .55); border-radius: 22px; overflow: hidden;
+  /* muncul seperti tirai: panel terbuka dari bawah ke atas, lalu isinya naik satu per satu (keluar: kebalikannya) */
+  clip-path: inset(100% 0 0 0 round 22px); transform: translateY(28px);
+  transition: clip-path .65s cubic-bezier(.77, 0, .18, 1), transform .65s cubic-bezier(.77, 0, .18, 1); }
+.chat-pop.show { clip-path: inset(0 0 0 0 round 22px); transform: none; }
+.chat-pop > * { opacity: 0; transform: translateY(24px); transition: opacity .2s, transform .25s; }
+.chat-pop.show > * { opacity: 1; transform: none; transition: opacity .6s cubic-bezier(.2, .8, .2, 1), transform .65s cubic-bezier(.2, .8, .2, 1); }
+.chat-pop.show > :nth-child(1) { transition-delay: .28s; }
+.chat-pop.show > :nth-child(2) { transition-delay: .36s; }
+.chat-pop.show > :nth-child(3) { transition-delay: .44s; }
+.chat-pop.show > :nth-child(4) { transition-delay: .52s; }
+.cp-head { display: flex; align-items: center; gap: 6px; padding: 14px 14px 14px 18px; background: #1b1a19; color: #fff; }
+.cp-ttl { flex: 1; min-width: 0; }
+.cp-ttl b { display: block; font: 500 12.5px var(--f-head); letter-spacing: .1em; text-transform: uppercase; }
+.cp-ttl span { display: block; margin-top: 2px; font-size: 10.5px; color: #bdb7ab; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cp-ico { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; color: #d9d4c8; transition: .2s; }
+.cp-ico:hover { background: rgba(255, 255, 255, .14); color: #fff; }
+.cp-ico svg { width: 16px; height: 16px; }
+.cp-log { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+.cp-b { max-width: 86%; padding: 10px 14px; border-radius: 16px; font-size: 12.5px; line-height: 1.65; white-space: pre-wrap; word-wrap: break-word; }
+.cp-b.user { align-self: flex-end; background: #050505; color: #fff; border-bottom-right-radius: 5px; }
+.cp-b.bot { align-self: flex-start; background: rgba(255, 255, 255, .65); border: 1px solid var(--line); border-bottom-left-radius: 5px; }
+.cp-b.sys { align-self: center; max-width: 100%; text-align: center; font-size: 11px; color: var(--ink-soft); padding: 2px 6px; }
+.cp-sugg { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 14px 10px; }
+.cp-sugg button { padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); font-size: 11px; background: rgba(255, 255, 255, .45); transition: .2s; }
+.cp-sugg button:hover { border-color: var(--gold); }
+.cp-in { display: flex; gap: 8px; padding: 10px 12px 12px; border-top: 1px solid var(--line); }
+.cp-in input { flex: 1; min-width: 0; padding: 11px 16px; border-radius: 999px; border: 1px solid var(--line); background: rgba(255, 255, 255, .7); font: 12.5px var(--f-body); outline: none; }
+.cp-in input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(233, 183, 95, .3); }
+.cp-send { width: 42px; height: 42px; flex: none; border-radius: 50%; display: grid; place-items: center; background: #050505; color: #fff; transition: .2s; }
+.cp-send:hover { box-shadow: 0 0 0 1px var(--gold), 0 4px 14px rgba(233, 183, 95, .45); }
+.cp-send svg { width: 17px; height: 17px; }
+@media (max-width: 820px) { .chat-pop { right: 12px; left: 12px; width: auto; bottom: 108px; } }

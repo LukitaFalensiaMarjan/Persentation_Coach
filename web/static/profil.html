@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Profil — Persentation Coach</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/app.css">
+<link rel="stylesheet" href="/static/css/latihan.css">
+<style>.avatar{display:grid;place-items:center;font:300 38px var(--f-head);color:#fff}</style>
+</head>
+<body>
+<main class="frame">
+  <header id="nav" class="nav"></header>
+  <div class="page"><div class="profile">
+    <div class="head">
+      <div class="avatar" id="avatar" role="img" aria-label="Foto profil"></div>
+      <div><h1 class="page-title">Profil saya</h1><button type="button" class="avatar-edit" id="pickFoto">Ganti foto</button></div>
+    </div>
+    <form class="card" id="form" novalidate>
+      <input type="file" name="foto" accept="image/jpeg,image/png,image/webp" hidden>
+      <div class="row2">
+        <div class="field"><label for="nama">Nama lengkap</label><input id="nama" name="nama" maxlength="80" required></div>
+        <div class="field"><label for="username">Username</label><input id="username" name="username" maxlength="20" required></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" readonly title="Email terverifikasi tidak bisa diubah"></div>
+        <div class="field"><label for="hp">Nomor HP</label><input id="hp" name="hp" type="tel" maxlength="20"></div>
+      </div>
+      <div class="field"><label for="alamat">Alamat</label><textarea id="alamat" name="alamat" maxlength="300"></textarea></div>
+      <p class="msg" id="msg" role="alert"></p>
+      <button class="btn solid" type="submit">Simpan perubahan</button>
+    </form>
+    <div class="card" style="margin-top:18px">
+      <div class="field" style="margin:0"><label>Bot Telegram</label><small id="tgState">Memeriksa…</small></div>
+      <div class="tg-box" id="tgBox" style="margin-top:14px"><div class="qr" id="tgQr"></div><p id="tgTxt"></p></div>
+      <div class="row-btn"><button class="btn ghost" type="button" id="tgConnect" hidden>Hubungkan Telegram</button><button class="btn ghost" type="button" id="tgOff" hidden>Putuskan</button></div>
+    </div>
+  </div></div>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="/static/js/shared.js"></script>
+<script src="/static/js/profil.js"></script>
+</body>
+</html>

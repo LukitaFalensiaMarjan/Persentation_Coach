@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Latihan — Persentation Coach</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/app.css">
+<link rel="stylesheet" href="/static/css/latihan.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <linearGradient id="gg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff7dc"/><stop offset=".5" stop-color="#e9b75f"/><stop offset="1" stop-color="#b98a3a"/></linearGradient>
+</defs></svg>
+<main class="frame">
+  <header id="nav" class="nav"></header>
+  <div class="page"><div class="wrap">
+    <div class="h-row"><div><h1 class="page-title sm">Latihan presentasi</h1><p class="lead">Berdirilah di depan kamera sampai pinggul terlihat, lalu mulai berbicara. Sistem membaca bahasa tubuhmu secara langsung.</p></div></div>
+    <div class="setup">
+      <div class="stage" id="stage">
+        <div class="mirror"><video id="cam" autoplay playsinline muted></video><canvas id="ov"></canvas></div>
+        <div class="hud" id="hud" hidden>
+          <span class="chip-label" id="lbl"><i></i><span id="lblT">—</span></span>
+          <div><div class="timer" id="timer">00:00</div><div class="fps" id="fps"></div></div>
+        </div>
+        <div class="alert" id="alert" role="alert"></div>
+        <div class="dbg" id="dbg"></div>
+        <div class="cover" id="cover">Menyalakan kamera…</div>
+      </div>
+      <div class="card opts">
+        <div id="setupBox">
+          <div class="field"><label>Durasi latihan</label>
+            <div class="chips" id="durs"><button data-s="30">30 dtk</button><button data-s="60" class="on">1 menit</button><button data-s="180">3 menit</button><button data-s="300">5 menit</button><button data-s="600">10 menit</button></div>
+          </div>
+          <div class="field"><label for="durCustom">Atau ketik sendiri (menit)</label><input id="durCustom" type="number" min="1" max="30" step="1" placeholder="mis. 7"></div>
+          <div class="field"><label for="camSel">Kamera</label><select id="camSel"><option>Memuat…</option></select></div>
+          <ul class="tips"><li>Kamera diam setinggi dada, badan terlihat sampai pinggul.</li><li>Cahaya dari depan, hindari cahaya kuat di belakang.</li><li>Video tidak disimpan; hanya angka hasil analisis.</li></ul>
+          <button class="btn solid big" id="startBtn" disabled>Mulai latihan</button>
+        </div>
+        <div id="runBox" hidden>
+          <p class="lead" style="margin-bottom:16px">Latihan berjalan. Tekan tombol di bawah untuk berhenti lebih awal.</p>
+          <button class="btn stop big" id="stopBtn">Hentikan latihan</button>
+          <div class="row-btn"><button class="btn ghost" id="dbgBtn" style="width:100%">Tampilkan angka debug</button></div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="/static/js/shared.js"></script>
+<script src="/static/js/hasil.js"></script>
+<script src="/static/js/latihan.js"></script>
+</body>
+</html>
