@@ -1,47 +1,47 @@
 # Persentation Coach
-*Sistem Pelatih Presentasi Otomatis Berbasis Keypoint Pose & Pendekatan Hibrida Machine Learning*
+*An Automated Presentation Coaching System Based on Pose Keypoints and a Hybrid Machine Learning Approach*
 
-> **Proyek Tugas Mata Kuliah Praktikum Machine Learning (M2)**  
+> **Machine Learning Practicum Course Project (M2)**  
 > **Politeknik Manufaktur Negeri Bangka Belitung (POLMAN)**
 
 ---
 
-## Ringkasan Eksekutif
+## Executive Summary
 
-**Persentation Coach** adalah aplikasi pelatih presentasi berbasis kecerdasan buatan (*Computer Vision & Machine Learning*) yang dirancang khusus untuk membantu mahasiswa melatih keterampilan berbicara di depan umum secara mandiri. Cukup bermodalkan kamera laptop atau webcam USB standar (tanpa perangkat sensor khusus atau IoT), sistem membaca 17 titik kerangka tubuh (*pose keypoints*) presenter secara *real-time* menggunakan **YOLO11-pose**.
+**Persentation Coach** is an AI-based presentation coaching application (*Computer Vision & Machine Learning*) designed to help students practice public speaking on their own. With nothing more than a laptop camera or a standard USB webcam (no special sensors or IoT devices), the system reads the presenter's 17 body *pose keypoints* in real time using **YOLO11-pose**.
 
-Bahasa tubuh diklasifikasikan ke dalam **7 kondisi gestur** menggunakan **pendekatan hibrida**:
-1. **Aturan Geometri Tubuh**: mendeteksi kondisi *membelakangi audiens*, *tangan terlipat*, dan *menunjuk slide*.
-2. **Pengukuran Kecepatan Gerak Tangan (*Motion Meter*)**: mendeteksi *gestur aktif* berbasis kecepatan pergelangan tangan terhadap bahu dengan normalisasi panjang badan dan filter anti-getar (*EMA & deadband*).
-3. **Random Forest Classifier**: mengklasifikasikan kondisi *netral*, *menunduk*, dan *tangan tersembunyi* berbasis 52 fitur koordinat keypoint ternormalisasi.
+Body language is classified into **7 gesture states** using a **hybrid approach**:
+1. **Body Geometry Rules**: detect *facing away from the audience*, *arms crossed*, and *pointing at the slide*.
+2. **Hand Motion Meter (`MotionMeter`)**: detects *active gestures* from wrist speed relative to the shoulders, normalized by torso length, with an anti-jitter filter (*EMA & deadband*).
+3. **Random Forest Classifier**: classifies *neutral*, *looking down*, and *hands hidden* from 52 normalized keypoint-coordinate features.
 
-Karena evaluasi murni didasarkan pada proporsi geometri kerangka tubuh ternormalisasi (bukan piksel gambar mentah), sistem ini **kebal terhadap perubahan latar belakang, warna pakaian, dan kondisi pencahayaan ruangan**.
-
----
-
-## Fitur Utama & Pembaruan Terbaru
-
-- **Analisis Real-Time via Kamera**: Deteksi kerangka tubuh presenter secara langsung (≥ 15 FPS di CPU standar laptop).
-- **Peringatan Langsung (*Real-Time Alert*)**: Peringatan visual di layar saat presenter membelakangi audiens (> 3 dtk), menunduk terlalu lama (> 5 dtk), atau melipat tangan (> 10 dtk).
-- **Proteksi Batas Percobaan Login (*Brute Force Rate Limiting*) [BARU]**:
-  - Batas maksimal 5 kali percobaan salah sebelum akun dikunci sementara selama 60 detik (HTTP 429).
-  - Tampilan visual sisa kesempatan serta tombol dengan animasi hitung mundur (*cooldown countdown*) di form web.
-  - Perlindungan ganda berbasis username dan IP address.
-- **Antarmuka Responsif Mobile / Layar Kecil [BARU]**:
-  - Tombol **Hamburger Menu** diposisikan rapi di kanan bawah tombol DAFTAR.
-  - Seluruh navigasi disatukan ke dalam **Mobile Drawer** yang elegan.
-  - Kompatibel dengan layar sentuh smartphone (iOS Safari & Android Chrome) dengan *touch targets* yang nyaman dan anti-*auto-zoom*.
-- **Transisi Pop-up Hasil Tirai (*Curtain Unveil*) [BARU]**:
-  - Pop-up evaluasi hasil latihan kini menggunakan transisi tirai membuka ke atas (*clip-path* dan *cubic-bezier*) yang selaras dengan pop-up chatbot.
-  - Elemen skor, grafik, dan saran muncul bertahap (*staggered rise*).
-- **Heatmap Pergerakan Panggung**: Menganalisis pergerakan posisi berdiri presenter di atas panggung (titik tengah pinggul).
-- **Generator Laporan PDF Otomatis (A4)**: Menghasilkan lembar laporan lengkap berisi skor komposit, rincian 4 aspek, timeline kejadian, proporsi gestur, dan 3 saran perbaikan utama.
-- **Konsultasi Chatbot Terbatas Topik**: Chatbot pendamping berbasis data latihan presenter dengan *guardrail* topik ketat (mendukung Google Gemini API, Ollama lokal, atau mode *rule-based* bawaan jika offline).
-- **Integrasi Bot Telegram**: Hubungkan akun via pemindaian kode QR / deep-link untuk menerima laporan PDF dan berinteraksi dengan bot di ponsel.
+Because evaluation relies on normalized body-skeleton proportions (not raw image pixels), the system is **robust to changes in background, clothing color, and room lighting**.
 
 ---
 
-## Arsitektur Sistem & Alur Klasifikasi Hibrida
+## Key Features & Latest Updates
+
+- **Real-Time Camera Analysis**: live detection of the presenter's skeleton (≥ 15 FPS on a standard laptop CPU).
+- **Real-Time Alerts**: on-screen warnings when the presenter faces away from the audience (> 3 s), looks down too long (> 5 s), or keeps arms crossed (> 10 s).
+- **Login Brute-Force Protection (Rate Limiting) [NEW]**:
+  - Up to 5 failed attempts before the account is temporarily locked for 60 seconds (HTTP 429).
+  - The web form shows the remaining attempts and a button with a cooldown countdown.
+  - Dual protection based on both username and IP address.
+- **Responsive Mobile / Small-Screen UI [NEW]**:
+  - The **hamburger menu** button is placed neatly at the top right.
+  - All navigation is consolidated into an elegant **mobile drawer**.
+  - Compatible with smartphone touchscreens (iOS Safari & Android Chrome), with comfortable touch targets and no auto-zoom.
+- **Curtain-Unveil Result Pop-up [NEW]**:
+  - The practice-result pop-up now uses an upward curtain-opening transition (`clip-path` and `cubic-bezier`) consistent with the chatbot pop-up.
+  - Score, charts, and advice appear in a staggered rise.
+- **Stage Movement Heatmap**: analyzes the presenter's standing position on stage (hip midpoint).
+- **Automatic PDF Report Generator (A4)**: produces a full report sheet with the composite score, the 4-aspect breakdown, an event timeline, gesture proportions, and the 3 main improvement tips.
+- **Topic-Restricted Chatbot Consultation**: a companion chatbot grounded in the presenter's own practice data, with strict topic *guardrails* (supports Google Gemini API, local Ollama, or a built-in *rule-based* mode when offline).
+- **Telegram Bot Integration**: link your account by scanning a QR code / deep link to receive PDF reports and chat with the bot on your phone.
+
+---
+
+## System Architecture & Hybrid Classification Flow
 
 ```
                        Webcam Video Frame
@@ -50,100 +50,100 @@ Karena evaluasi murni didasarkan pada proporsi geometri kerangka tubuh ternormal
                                │
               ┌────────────────┴────────────────┐
               │                                 │
-     [1. Aturan Geometri]               [Bahu Terlihat?]
-      • Hidung/mata tak terlihat       ┌────────┴────────┐
-        atau bahu terbalik?            │ YA              │ TIDAK
-        ──► membelakangi               │                 └──► Abaikan
-      • Tangan menyilang di dada       │
-        atau dekat siku seberang?      ▼
-        ──► tangan_terlipat     [2. Pengukur Gerak (MotionMeter)]
-      • Pergelangan tangan jauh       • Kecepatan tangan di depan dada
-        ke samping di atas pinggul?     > ambang batas (move_t)?
-        ──► menunjuk_slide              ──► gestur_aktif
+     [1. Geometry Rules]                [Shoulders visible?]
+      • Nose/eyes not visible          ┌────────┴────────┐
+        or shoulders flipped?          │ YES             │ NO
+        ──► facing away                │                 └──► Ignore
+      • Arms crossed over chest        │
+        or near opposite elbow?        ▼
+        ──► arms_crossed        [2. Motion Meter (MotionMeter)]
+      • Wrist far to the side         • Hand speed in front of chest
+        above the hips?                 > threshold (move_t)?
+        ──► pointing_slide              ──► active_gesture
               │                        │
               └─────────┬──────────────┘
-                        │ Jika tidak memenuhi aturan di atas:
+                        │ If none of the rules above match:
                         ▼
-                [3. Random Forest (52 Fitur Keypoints)]
-                  • netral
-                  • menunduk
-                  • tangan_tersembunyi
+                [3. Random Forest (52 Keypoint Features)]
+                  • neutral
+                  • looking down
+                  • hands hidden
                         │
                         ▼
-                Smoothing (Voting 15 Frame Terakhir)
+                Smoothing (Vote over the Last 15 Frames)
                         │
        ┌────────────────┴────────────────┐
        ▼                                 ▼
-Peringatan Layar & Web Sesi       Database SQLite & PDF
+On-screen Alerts & Web Session    SQLite Database & PDF
 ```
 
 ---
 
-## Struktur Direktori Proyek
+## Project Directory Structure
 
 ```text
 Persentation_Coach/
 │
-├── web/                     # Aplikasi Web Fullstack (FastAPI + HTML5/CSS/JS)
-│   ├── main.py              # Server web utama, autentikasi, rate limit, WebSocket
-│   ├── engine.py            # Mesin analisis pose, scoring & kalkulasi metrik sesi
-│   ├── laporan.py           # Generator laporan PDF (A4) berbasis matplotlib
-│   ├── chat.py              # Chatbot konsultasi dengan guardrail berlapis
-│   ├── tele.py              # Integrasi Bot Telegram (HTTP Polling)
-│   ├── surel.py             # Layanan pengiriman email (SMTP/Verifikasi)
-│   └── static/              # Asset antarmuka (HTML, CSS responsif, JavaScript)
-│       ├── css/             # Stylesheet (app.css, latihan.css, chatpop.css, landing.css)
+├── web/                     # Fullstack web app (FastAPI + HTML5/CSS/JS)
+│   ├── main.py              # Main web server, authentication, rate limiting, WebSocket
+│   ├── engine.py            # Pose analysis engine, scoring & session metric calculation
+│   ├── laporan.py           # PDF (A4) report generator based on matplotlib
+│   ├── chat.py              # Consultation chatbot with layered guardrails
+│   ├── tele.py              # Telegram Bot integration (HTTP polling)
+│   ├── surel.py             # Email delivery service (SMTP / verification)
+│   └── static/              # UI assets (HTML, responsive CSS, JavaScript)
+│       ├── css/             # Stylesheets (app.css, latihan.css, chatpop.css, landing.css)
 │       ├── js/              # Client scripts (shared.js, auth.js, latihan.js, hasil.js, riwayat.js)
-│       └── img/             # Logo dan ikon aplikasi
+│       └── img/             # App logos and icons
 │
-├── models/                  # Bobot model & artefak machine learning
-│   ├── kp_rf.joblib         # Model Random Forest untuk fitur keypoints
-│   ├── gesture_best.pt      # Model YOLO11-cls (gambar crop pembanding)
+├── models/                  # Model weights & machine learning artifacts
+│   ├── kp_rf.joblib         # Random Forest model for keypoint features
+│   ├── gesture_best.pt      # YOLO11-cls model (cropped-image baseline)
 │   └── kp_confusion_matrix.png
 │
-├── demo_kp.py               # Demo visualisasi real-time berbasis OpenCV
-├── demo_webcam.py           # Demo pembanding menggunakan YOLO11-cls
-├── kp_features.py           # Modul ekstraksi 52 fitur geometri keypoints
-├── extract_keypoints.py     # Ekstraksi fitur keypoint dataset ke format .npz
-├── train_kp.py              # Skrip melatih ulang Random Forest dari keypoints
-├── train.py                 # Skrip melatih ulang model YOLO11-cls
-├── cek_kamera.py            # Skrip utilitas pengecekan index kamera / webcam
+├── demo_kp.py               # Real-time OpenCV visualization demo
+├── demo_webcam.py           # Baseline demo using YOLO11-cls
+├── kp_features.py           # 52-feature keypoint geometry extraction module
+├── extract_keypoints.py     # Dataset keypoint feature extraction to .npz
+├── train_kp.py              # Script to retrain the keypoint Random Forest
+├── train.py                 # Script to retrain the YOLO11-cls model
+├── cek_kamera.py            # Utility to check camera / webcam indexes
 │
-├── yolo11n-pose.pt          # Bobot YOLO11-pose nano pretrained
-├── kp_data.npz              # Data fitur keypoint yang telah diekstrak
-├── requirements.txt         # Daftar pustaka & dependensi Python
-├── .env.example             # Contoh konfigurasi variabel lingkungan
-├── .env                     # File konfigurasi aktif lokal
-├── .gitignore               # Konfigurasi ignore file git
-├── PRD.md                   # Product Requirement Document lengkap
-└── README.md                # Dokumentasi resmi proyek ini
+├── yolo11n-pose.pt          # Pretrained YOLO11-pose nano weights
+├── kp_data.npz              # Extracted keypoint feature data
+├── requirements.txt         # Python libraries & dependencies
+├── .env.example             # Sample environment variable configuration
+├── .env                     # Active local configuration file
+├── .gitignore               # Git ignore configuration
+├── PRD.md                   # Full Product Requirement Document
+└── README.md                # Official documentation for this project
 ```
 
 ---
 
-## Prasyarat Sistem
+## System Requirements
 
-1. **Sistem Operasi**: Windows 10/11, Linux (Ubuntu/Debian), atau macOS.
-2. **Python**: Versi `3.10`, `3.11`, `3.12`, atau `3.14`.
-3. **Perangkat Keras**:
-   - Webcam internal laptop atau webcam USB eksternal (minimal 720p @ 30fps).
-   - CPU modern (inferensi pose YOLO11n sangat ringan dan berjalan mulus tanpa kartu grafis khusus).
-   - GPU NVIDIA dengan CUDA (opsional, hanya jika ingin melatih ulang deep learning model).
+1. **Operating System**: Windows 10/11, Linux (Ubuntu/Debian), or macOS.
+2. **Python**: version `3.10`, `3.11`, `3.12`, or `3.14`.
+3. **Hardware**:
+   - Built-in laptop webcam or external USB webcam (minimum 720p @ 30 fps).
+   - Modern CPU (YOLO11n pose inference is very light and runs smoothly without a dedicated graphics card).
+   - NVIDIA GPU with CUDA (optional, only if you want to retrain deep learning models).
 
 ---
 
-## Panduan Instalasi di Komputer Lain (Langkah-demi-Langkah)
+## Installation Guide on Another Computer (Step by Step)
 
-Panduan ini ditujukan bagi penguji, dosen penilai, atau rekan pengembang yang ingin memasang dan menjalankan proyek ini di komputer baru dari awal:
+This guide is for testers, examiners, or fellow developers who want to install and run the project on a new computer from scratch:
 
-### 1. Unduh / Salin Proyek
-Pastikan seluruh folder repositori disalin ke komputer target, lalu buka terminal (PowerShell di Windows, atau Bash di Linux/macOS) pada direktori proyek:
+### 1. Download / Copy the Project
+Make sure the whole repository folder is copied to the target computer, then open a terminal (PowerShell on Windows, or Bash on Linux/macOS) in the project directory:
 ```powershell
 cd Persentation_Coach
 ```
 
-### 2. Buat dan Aktifkan Virtual Environment
-Sangat disarankan membuat virtual environment agar dependensi terisolasi rapi:
+### 2. Create and Activate a Virtual Environment
+Creating a virtual environment is strongly recommended to keep dependencies isolated:
 - **Windows (PowerShell)**:
   ```powershell
   python -m venv venv
@@ -155,16 +155,16 @@ Sangat disarankan membuat virtual environment agar dependensi terisolasi rapi:
   source venv/bin/activate
   ```
 
-### 3. Pasang Dependensi Python
-Jalankan perintah instalasi dari `requirements.txt`:
+### 3. Install Python Dependencies
+Run the install command from `requirements.txt`:
 ```powershell
 pip install -r requirements.txt
 ```
 
-> **Info Tambahan**: Jika menggunakan GPU NVIDIA dan ingin memanfaatkan CUDA, ikuti instruksi spesifik kartu grafis di [pytorch.org](https://pytorch.org/). Secara default, mode CPU sudah menghasilkan performa inferensi ≥ 15 FPS.
+> **Note**: If you use an NVIDIA GPU and want to use CUDA, follow the GPU-specific instructions at [pytorch.org](https://pytorch.org/). By default, CPU mode already delivers ≥ 15 FPS inference.
 
-### 4. Konfigurasi Lingkungan (`.env`)
-Salin file `.env.example` menjadi `.env`:
+### 4. Environment Configuration (`.env`)
+Copy `.env.example` to `.env`:
 - **Windows (PowerShell)**:
   ```powershell
   Copy-Item .env.example .env
@@ -174,24 +174,24 @@ Salin file `.env.example` menjadi `.env`:
   cp .env.example .env
   ```
 
-> **Mode Standalone / Offline**: Aplikasi sudah dirancang untuk **langsung berfungsi secara mandiri (offline)** tanpa perlu mengisi API key apa pun. Tautan verifikasi email akan dicetak langsung di konsol terminal, database SQLite akan dibuat otomatis, dan chatbot menggunakan basis tips aturan lokal.
+> **Standalone / Offline Mode**: The app is designed to **work on its own (offline)** without any API key. The email verification link is printed straight to the terminal console, the SQLite database is created automatically, and the chatbot uses the local rule-based tips knowledge base.
 
-Jika ingin mengaktifkan integrasi opsional, isi file `.env`:
+To enable optional integrations, fill in the `.env` file:
 ```ini
-# Google OAuth (Opsional, untuk login akun Google)
+# Google OAuth (Optional, for Google account login)
 GOOGLE_CLIENT_ID=
 
-# Token Bot Telegram (Opsional, dari @BotFather)
+# Telegram Bot Token (Optional, from @BotFather)
 TELEGRAM_BOT_TOKEN=
 
-# Chatbot AI Cerdas (Opsional: Google Gemini API atau Ollama lokal)
+# Smart AI Chatbot (Optional: Google Gemini API or local Ollama)
 GEMINI_API_KEY=
 GEMINI_MODEL=gemini-2.0-flash
 OLLAMA_URL=
 OLLAMA_MODEL=llama3.2
 CHAT_BATAS_HARIAN=20
 
-# Konfigurasi SMTP Email (Opsional, jika kosong tautan dicetak di konsol)
+# Email SMTP Configuration (Optional, if empty the link is printed to the console)
 SMTP_HOST=
 SMTP_PORT=587
 SMTP_USER=
@@ -202,74 +202,74 @@ BASE_URL=http://localhost:8000
 
 ---
 
-## Cara Menjalankan Aplikasi
+## How to Run the Application
 
-### A. Menjalankan Dashboard Web Utama (Rekomendasi)
-Jalankan server aplikasi melalui Uvicorn:
+### A. Run the Main Web Dashboard (Recommended)
+Start the application server with Uvicorn:
 ```powershell
 python -m uvicorn web.main:app --reload --port 8000
 ```
-Buka browser favorit Anda dan akses:
+Open your favorite browser and go to:
 **[http://localhost:8000](http://localhost:8000)**
 
-**Alur Pengujian:**
-1. Masuk ke halaman **Daftar** untuk membuat akun baru. Tautan verifikasi email akan langsung muncul di terminal (jika SMTP kosong) atau akun bisa langsung login.
-2. Buka menu **Latihan**.
-3. Izinkan akses kamera pada browser laptop.
-4. Pilih durasi latihan (misal: 1 menit), lalu klik **Mulai latihan**.
-5. Cobalah berdiri di depan kamera dan variasikan bahasa tubuh (membelakangi, melipat tangan, menunjuk slide, atau berbicara dengan gestur tangan aktif).
-6. Di akhir sesi, pop-up hasil evaluasi akan muncul dengan animasi tirai membuka ke atas, menampilkan cincin skor total, rincian per aspek, dan tombol **Unduh PDF**.
+**Testing Flow:**
+1. Go to the **Register** page to create a new account. The email verification link appears in the terminal (if SMTP is empty), or the account can log in right away.
+2. Open the **Latihan** (Practice) menu.
+3. Allow camera access in your browser.
+4. Choose a practice duration (e.g. 1 minute), then click **Mulai latihan** (Start practice).
+5. Stand in front of the camera and vary your body language (facing away, crossing arms, pointing at the slide, or speaking with active hand gestures).
+6. At the end of the session, the result pop-up appears with an upward curtain-opening animation, showing the total score ring, the per-aspect breakdown, and a **Download PDF** button.
 
 ---
 
-### B. Menjalankan Pengujian Kamera & Demo CLI
+### B. Run Camera Tests & CLI Demos
 
-#### 1. Cek Indeks Kamera
-Untuk memastikan kamera internal atau webcam USB terdeteksi oleh OpenCV:
+#### 1. Check Camera Index
+To make sure the built-in camera or USB webcam is detected by OpenCV:
 ```powershell
 python cek_kamera.py
 ```
 
-#### 2. Demo Deteksi OpenCV Langsung (Desktop GUI)
-Menjalankan pipeline hibrida keypoint + Random Forest langsung pada jendela GUI OpenCV:
+#### 2. Live OpenCV Detection Demo (Desktop GUI)
+Runs the hybrid keypoint + Random Forest pipeline directly in an OpenCV GUI window:
 ```powershell
 python demo_kp.py --kp models\kp_rf.joblib --cam 0
 ```
-- Gunakan `--cam 1` jika menggunakan kamera USB eksternal.
-- Tekan `d` untuk menampilkan/menyembunyikan angka debug parameter geometri.
-- Tekan `s` untuk menyimpan tangkapan layar.
-- Tekan `q` untuk keluar.
+- Use `--cam 1` if you use an external USB camera.
+- Press `d` to show/hide the geometry-parameter debug numbers.
+- Press `s` to save a screenshot.
+- Press `q` to quit.
 
-#### 3. Melatih Ulang Model Keypoint (Opsional)
-Jika Anda menambahkan data baru pada folder dataset `gesture_rf`:
+#### 3. Retrain the Keypoint Model (Optional)
+If you add new data to the `gesture_rf` dataset folder:
 ```powershell
-# 1. Ekstraksi koordinat pose menjadi array fitur (kp_data.npz)
+# 1. Extract pose coordinates into a feature array (kp_data.npz)
 python extract_keypoints.py --data gesture_rf --out kp_data.npz
 
-# 2. Latih model Random Forest
+# 2. Train the Random Forest model
 python train_kp.py --data kp_data.npz
 ```
 
 ---
 
-## Rubrik & Rumus Penilaian Skor
+## Scoring Rubric & Formula
 
-Sistem menghasilkan skor komposit **0–100** yang dihitung secara matematis berdasarkan 4 aspek bahasa tubuh:
+The system produces a composite **0–100** score computed mathematically from 4 body-language aspects:
 
-$$\text{Skor Total} = (0.30 \times \text{Orientasi}) + (0.30 \times \text{Gestur}) + (0.25 \times \text{Postur}) + (0.15 \times \text{Pergerakan})$$
+$$\text{Total Score} = (0.30 \times \text{Orientation}) + (0.30 \times \text{Gesture}) + (0.25 \times \text{Posture}) + (0.15 \times \text{Movement})$$
 
-| Aspek | Bobot | Dasar Pengukuran |
+| Aspect | Weight | Basis of Measurement |
 |---|:---:|---|
-| **Orientasi ke Audiens** | **30%** | Persentase waktu tubuh dan wajah presenter menghadap audiens (mengurangi waktu membelakangi). |
-| **Gestur Tangan** | **30%** | Keberadaan gerakan tangan aktif dinamis yang mendukung penjelasan, serta meminimalkan posisi tangan terlipat atau dimasukkan ke saku. |
-| **Postur Kepala** | **25%** | Ketegakan pandangan kepala (mengurangi kebiasaan menunduk membaca catatan terlalu lama). |
-| **Pergerakan Posisi** | **15%** | Menganalisis stabilitas perpindahan presenter di panggung (melalui heatmap posisi pinggul). |
+| **Audience Orientation** | **30%** | Percentage of time the presenter's body and face are turned toward the audience (minus time facing away). |
+| **Hand Gestures** | **30%** | Presence of dynamic active hand movement that supports the explanation, while minimizing crossed arms or hands in pockets. |
+| **Head Posture** | **25%** | Upright head position (minus the habit of looking down at notes for too long). |
+| **Position Movement** | **15%** | Stability of the presenter's movement on stage (via the hip-position heatmap). |
 
 ---
 
-## Pengembang & Lisensi
+## Developers & License
 
-- **Institusi**: Politeknik Manufaktur Negeri Bangka Belitung (POLMAN)
-- **Mata Kuliah**: Praktikum Machine Learning (M2)
-- **Tahun**: 2026
-- **Lisensi**: *Academic & Educational Purpose*
+- **Institution**: Politeknik Manufaktur Negeri Bangka Belitung (POLMAN)
+- **Course**: Machine Learning Practicum (M2)
+- **Year**: 2026
+- **License**: *Academic & Educational Purpose*

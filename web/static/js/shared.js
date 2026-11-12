@@ -61,7 +61,8 @@ const PC = (() => {
       nameSpan.textContent = me.nama || me.username;
       a.append(av, nameSpan);
       const out = document.createElement("button");
-      out.className = "lnk"; out.textContent = "KELUAR";
+      out.className = "lnk"; out.title = "Keluar"; out.setAttribute("aria-label", "Keluar");
+      out.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>`;
       out.onclick = async () => { await api("/api/keluar", { method: "POST" }); go("/"); };
       // LATIHAN dan RIWAYAT menyatu dengan menu utama (satu baris, jarak sama)
       nav.querySelector(".nav-center").insertAdjacentHTML("beforeend", `<a href="/latihan">LATIHAN</a><a href="/riwayat">RIWAYAT</a>`);
