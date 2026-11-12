@@ -1,3 +1,13 @@
 data/
 .env
 __pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+.vscode/
+.claude/
+.idea/
+*.log
+

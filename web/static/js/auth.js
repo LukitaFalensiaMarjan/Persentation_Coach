@@ -55,6 +55,25 @@
       done();
     } catch (e) {
       fail(e); btn.disabled = false;
+      // jika terkena batas percobaan login (429), kunci tombol dan tampilkan hitung mundur
+      if (!isDaftar && e.status === 429) {
+        btn.disabled = true;
+        const m = e.message.match(/(\d+)\s*detik/);
+        let sisa = m ? parseInt(m[1], 10) : 60;
+        const teksAsli = btn.textContent;
+        clearInterval(btn._t);
+        btn.textContent = `Terkunci (${sisa}s)`;
+        btn._t = setInterval(() => {
+          sisa--;
+          if (sisa > 0) {
+            btn.textContent = `Terkunci (${sisa}s)`;
+          } else {
+            clearInterval(btn._t);
+            btn.disabled = false;
+            btn.textContent = teksAsli;
+          }
+        }, 1000);
+      }
       // akun ada tapi email belum diverifikasi: satu tombol kirim ulang saja (jeda 60 dtk-nya tetap berjalan walau tombol Masuk ditekan lagi)
       if (!isDaftar && e.status === 403) {
         ulangData.username = d.username;

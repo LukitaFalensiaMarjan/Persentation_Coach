@@ -1,9 +1,9 @@
 """Server web Persentation Coach: auth, profil, halaman statis. Jalankan: python -m uvicorn web.main:app --reload"""
-import asyncio, hashlib, hmac, json, os, re, secrets, sqlite3, urllib.parse, urllib.request
+import asyncio, hashlib, hmac, json, math, os, re, secrets, sqlite3, time, urllib.parse, urllib.request
 from pathlib import Path
 
 from dotenv import load_dotenv
-from fastapi import Cookie, Depends, FastAPI, File, Form, HTTPException, Response, UploadFile, WebSocket, WebSocketDisconnect
+from fastapi import Cookie, Depends, FastAPI, File, Form, HTTPException, Request, Response, UploadFile, WebSocket, WebSocketDisconnect
 from fastapi.responses import FileResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
@@ -58,6 +58,8 @@ def init_db():
                 "dibuat TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP)")  # kode disimpan sebagai hash sha256
     con.execute("CREATE TABLE IF NOT EXISTS reset_password(kode TEXT PRIMARY KEY, user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE, "
                 "dibuat TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP)")
+    con.execute("CREATE TABLE IF NOT EXISTS login_percobaan(kunci TEXT PRIMARY KEY, gagal INTEGER NOT NULL DEFAULT 0, "
+                "terkunci_sampai REAL NOT NULL DEFAULT 0, waktu_terakhir REAL NOT NULL DEFAULT 0)")
     con.commit(); con.close()
 
 
@@ -288,17 +290,97 @@ def username_tersedia(nama: str):
     return {"tersedia": bool(USERNAME_RE.match(nama)) and not ada}
 
 
+# ---------- batas percobaan login (brute force protection) ----------
+BATAS_LOGIN_GAGAL = 5         # maksimal 5 kali gagal sebelum dikunci
+DURASI_KUNCI_DETIK = 60       # waktu penguncian (60 detik)
+JENDELA_RESET_DETIK = 300     # reset hitungan gagal jika tidak ada percobaan selama 5 menit
+BATAS_LOGIN_IP = 15           # batas gagal per IP untuk mencegah credential stuffing massal
+
+
+def get_client_ip(request: Request) -> str:
+    forwarded = request.headers.get("x-forwarded-for")
+    if forwarded:
+        return forwarded.split(",")[0].strip()
+    return request.client.host if request.client else "127.0.0.1"
+
+
+def cek_status_kunci(con: sqlite3.Connection, kunci: str) -> tuple[int, int]:
+    """Mengembalikan (jumlah_gagal, sisa_detik_terkunci). Jika tidak terkunci, sisa_detik = 0."""
+    r = con.execute("SELECT gagal, terkunci_sampai, waktu_terakhir FROM login_percobaan WHERE kunci=?", (kunci,)).fetchone()
+    if not r:
+        return 0, 0
+    sekarang = time.time()
+    gagal, terkunci_sampai, waktu_terakhir = r["gagal"], r["terkunci_sampai"], r["waktu_terakhir"]
+    if sekarang < terkunci_sampai:
+        return gagal, int(math.ceil(terkunci_sampai - sekarang))
+    if sekarang - waktu_terakhir > JENDELA_RESET_DETIK:
+        return 0, 0
+    return gagal, 0
+
+
+def catat_login_gagal(con: sqlite3.Connection, kunci: str, batas: int = BATAS_LOGIN_GAGAL, durasi_kunci: int = DURASI_KUNCI_DETIK) -> tuple[int, int]:
+    """Mencatat 1 kegagalan login. Mengembalikan (gagal_baru, sisa_kunci_detik)."""
+    sekarang = time.time()
+    gagal_lama, _ = cek_status_kunci(con, kunci)
+    gagal_baru = gagal_lama + 1
+    terkunci_sampai = (sekarang + durasi_kunci) if gagal_baru >= batas else 0
+    con.execute("""
+        INSERT INTO login_percobaan(kunci, gagal, terkunci_sampai, waktu_terakhir)
+        VALUES(?, ?, ?, ?)
+        ON CONFLICT(kunci) DO UPDATE SET gagal=?, terkunci_sampai=?, waktu_terakhir=?
+    """, (kunci, gagal_baru, terkunci_sampai, sekarang, gagal_baru, terkunci_sampai, sekarang))
+    con.commit()
+    sisa_kunci = durasi_kunci if gagal_baru >= batas else 0
+    return gagal_baru, sisa_kunci
+
+
+def reset_login_gagal(con: sqlite3.Connection, kunci: str):
+    """Menghapus catatan kegagalan saat login berhasil."""
+    con.execute("DELETE FROM login_percobaan WHERE kunci=?", (kunci,))
+    con.commit()
+
+
 @app.post("/api/masuk")
-def masuk(d: Masuk, res: Response):
+def masuk(d: Masuk, res: Response, request: Request):
+    username = d.username.strip().lower()
+    ip = get_client_ip(request)
+    kunci_user = f"user:{username}"
+    kunci_ip = f"ip:{ip}"
+
     con = db()
-    u = con.execute("SELECT * FROM users WHERE username=?", (d.username.strip().lower(),)).fetchone()
-    con.close()
+    # 1. Cek apakah user atau IP sedang dalam masa hukuman lockout
+    _, sisa_user = cek_status_kunci(con, kunci_user)
+    if sisa_user > 0:
+        con.close()
+        raise HTTPException(429, f"Terlalu banyak percobaan login yang gagal. Akun dikunci sementara. Silakan coba lagi dalam {sisa_user} detik.")
+
+    _, sisa_ip = cek_status_kunci(con, kunci_ip)
+    if sisa_ip > 0:
+        con.close()
+        raise HTTPException(429, f"Terlalu banyak percobaan login dari perangkat ini. Silakan coba lagi dalam {sisa_ip} detik.")
+
+    u = con.execute("SELECT * FROM users WHERE username=?", (username,)).fetchone()
     # hash dummy agar waktu respons tidak membocorkan keberadaan username
     ok = check_pw(d.password, u["password_hash"] if u else hash_pw("dummy"))
+
     if not (u and ok):
-        raise HTTPException(401, "Username atau password salah")
+        gagal_user, kunci_detik = catat_login_gagal(con, kunci_user, batas=BATAS_LOGIN_GAGAL, durasi_kunci=DURASI_KUNCI_DETIK)
+        catat_login_gagal(con, kunci_ip, batas=BATAS_LOGIN_IP, durasi_kunci=DURASI_KUNCI_DETIK)
+        con.close()
+        if kunci_detik > 0:
+            raise HTTPException(429, f"Terlalu banyak percobaan login yang gagal. Akun dikunci sementara selama {DURASI_KUNCI_DETIK} detik.")
+        sisa = BATAS_LOGIN_GAGAL - gagal_user
+        raise HTTPException(401, f"Username atau password salah. Sisa kesempatan: {sisa} kali.")
+
     if not u["email_verified"]:
+        con.close()
         raise HTTPException(403, "Email belum diverifikasi. Cek kotak masuk emailmu, atau kirim ulang tautan verifikasi.")
+
+    # Login berhasil: reset catatan kegagalan untuk user & IP
+    reset_login_gagal(con, kunci_user)
+    reset_login_gagal(con, kunci_ip)
+    con.close()
+
     new_session(res, u["id"])
     return {"ok": True}
 

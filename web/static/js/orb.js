@@ -108,10 +108,34 @@ function initOrb(canvas, lite) {
 
   // pose per seksi landing
   const POSES = [{ x: 0, y: -0.8, s: 0.5 }, { x: 0.9, y: 0, s: 0.8 }, { x: 0, y: 0, s: 0.8 }, { x: 0, y: 0, s: 0.8 }, { x: 0.9, y: 0, s: 0.85 }];
-  let aspect = 1, pose = POSES[0];
+  let aspect = 1, curK = 0, pose = POSES[0];
   const apply = immediate => {
-    const fit = Math.min(1, aspect / 1.5), nx = aspect < 0.9 ? 0 : pose.x;
-    const to = { x: nx, y: pose.y * fit }, sc = pose.s * fit;
+    const isMobile = aspect < 0.95 || (window.innerWidth && window.innerWidth <= 820);
+    let to, sc;
+    if (isMobile) {
+      const w = canvas.clientWidth || window.innerWidth || 390;
+      const mScale = Math.min(0.28, Math.max(0.20, 0.26 * (w / 380)));
+      if (curK === 0) {
+        // Halaman 1 (Hero): posisi seimbang di bawah tombol aksi
+        to = { x: 0, y: -0.46 };
+        sc = mScale;
+      } else if (curK === 1) {
+        // Halaman 2 (Tentang): diangkat ke tengah area terbuka (y = -0.32) agar tidak terlalu bawah
+        to = { x: 0, y: -0.32 };
+        sc = mScale;
+      } else if (curK === 4) {
+        // Halaman 5 (Ajakan/CTA): diangkat pas di bawah tombol (y = -0.42)
+        to = { x: 0, y: -0.42 };
+        sc = mScale;
+      } else {
+        to = { x: 0, y: 0 };
+        sc = mScale;
+      }
+    } else {
+      const fit = Math.min(1, aspect / 1.5);
+      to = { x: pose.x, y: pose.y };
+      sc = pose.s * fit;
+    }
     if (immediate || !window.gsap) { group.position.set(to.x, to.y, 0); group.scale.setScalar(sc); return; }
     gsap.to(group.position, { ...to, duration: 1.3, ease: "power3.inOut" });
     gsap.to(group.scale, { x: sc, y: sc, z: sc, duration: 1.3, ease: "power3.inOut" });
@@ -151,5 +175,11 @@ function initOrb(canvas, lite) {
     renderer.render(scene, camera);
   })();
 
-  return { setPose: k => { pose = POSES[k] || POSES[0]; apply(false); } };
+  return {
+    setPose: k => {
+      curK = typeof k === "number" ? k : 0;
+      pose = POSES[curK] || POSES[0];
+      apply(false);
+    }
+  };
 }

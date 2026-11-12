@@ -43,7 +43,7 @@ const HasilModal = (() => {
       m.querySelector(".fg").style.strokeDashoffset = C * (1 - h.total / 100);
       m.querySelectorAll(".fill").forEach(f => (f.style.width = f.dataset.w + "%"));
     });
-    const close = () => { m.classList.remove("show"); setTimeout(() => m.remove(), 350); document.removeEventListener("keydown", onKey); onClose && onClose(); };
+    const close = () => { m.classList.remove("show"); setTimeout(() => m.remove(), 650); document.removeEventListener("keydown", onKey); onClose && onClose(); };
     const onKey = e => e.key === "Escape" && close();
     document.addEventListener("keydown", onKey);
     m.addEventListener("click", e => e.target === m && close());

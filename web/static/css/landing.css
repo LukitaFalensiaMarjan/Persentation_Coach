@@ -46,17 +46,36 @@
 .share svg { width: 11px; height: 11px; }
 
 @media (max-width: 820px) {
-  .hero-panel { grid-template-columns: 1fr; height: auto; min-height: 56%; padding: 76px 16px 22px; align-content: center; gap: 14px; }
-  .hero-low { left: 16px; top: 74%; }
-  .counter { left: 16px; } .dots { display: none; }
-  .stmt, .cta { left: 16px; right: 16px; }
-  .panel { padding: 70px 16px 56px; }
-  .panel .top { grid-template-columns: 1fr; gap: 10px; margin-top: 30px; }
-  .cards.c3, .cards.c4 { grid-template-columns: 1fr; gap: 10px; margin-top: 18px; }
-  .cards.c4 { grid-template-columns: 1fr 1fr; }
-  .svc { flex-direction: row; align-items: center; gap: 14px; padding: 12px 16px; }
+  .hero-panel { background: transparent; pointer-events: none; grid-template-columns: 1fr; height: auto; min-height: auto; max-height: none; padding: 86px 16px 14px; align-content: start; gap: 10px; }
+  .hero-panel > * { pointer-events: auto; }
+  .t-sub { font-size: 12px; line-height: 1.75; max-width: 320px; }
+  .hero-low { left: 14px; right: 80px; top: auto; bottom: 16px; max-width: 250px; font-size: 12px; line-height: 1.7; }
+  .counter { left: 14px; top: 58px; } .dots { display: none; }
+  .stmt, .cta { left: 16px; right: 16px; top: 92px; max-width: none; transform: none; }
+  .stmt .t-head { font-size: clamp(21px, 5.5vw, 28px); }
+  .stmt p { margin-top: 14px; font-size: 12px; line-height: 1.75; max-width: 320px; }
+  .cta .t-head { font-size: clamp(24px, 6vw, 32px); }
+  .cta p { margin: 12px 0 0; font-size: 12px; line-height: 1.75; max-width: 320px; }
+  .cta .btns { margin-top: 18px; gap: 8px; }
+  .panel { padding: 94px 14px 44px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  .panel .top { grid-template-columns: 1fr; gap: 8px; margin-top: 10px; }
+  .cards.c3 { grid-template-columns: 1fr; gap: 10px; margin-top: 14px; }
+  .cards.c4 { grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  .svc { flex-direction: row; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 14px; }
   .cards.c4 .svc { flex-direction: column; align-items: flex-start; }
-  .ico { flex: none; width: 64px; } .ico svg { width: 56px; }
-  .num { flex: none; font-size: 36px; }
-  .share { right: 16px; }
+  .ico { flex: none; width: 54px; } .ico svg { width: 48px; }
+  .num { flex: none; font-size: 32px; }
+  .share { right: 14px; bottom: 14px; }
+}
+
+@media (max-width: 520px) {
+  .hero-panel { background: transparent; padding: 80px 14px 12px; min-height: auto; max-height: none; }
+  .stmt, .cta { left: 14px; right: 14px; top: 88px; }
+  .cards.c4 { grid-template-columns: 1fr; }
+  .cards.c4 .svc { flex-direction: row; align-items: center; }
+  .t-head { font-size: clamp(21px, 5.5vw, 28px); }
+  .t-sub { font-size: 12px; line-height: 1.75; max-width: 320px; }
+  .hero-low { font-size: 12px; line-height: 1.7; max-width: 240px; }
+  .btns { gap: 8px; margin-top: 14px; }
+  .btns .btn { width: 100%; padding: 11px 16px; font-size: 12px; }
 }

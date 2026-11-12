@@ -97,7 +97,7 @@
   }
 
   document.addEventListener("click", e => {
-    if (e.target.closest(".chat-fab, .chat-ico")) { e.preventDefault(); isOpen ? close() : open(); }
+    if (e.target.closest(".chat-fab, .chat-ico, .mb-chat, .nd-chat")) { e.preventDefault(); isOpen ? close() : open(); }
   });
   document.addEventListener("keydown", e => e.key === "Escape" && close());
 })();

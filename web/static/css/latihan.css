@@ -32,11 +32,36 @@
 .btn.stop { background: #8d2b2b; border-color: #8d2b2b; color: #fff; }
 .row-btn { display: flex; gap: 12px; margin-top: 14px; }
 
-/* pop-up hasil */
-.modal { position: fixed; inset: 0; z-index: 90; display: grid; place-items: center; padding: 20px; background: rgba(24, 22, 20, .55); backdrop-filter: blur(8px); opacity: 0; transition: opacity .35s; }
+/* pop-up hasil: transisi tirai ala chat-pop (terbuka dari bawah ke atas, isinya naik satu per satu) */
+.modal {
+  position: fixed; inset: 0; z-index: 90; display: grid; place-items: center; padding: 20px;
+  background: rgba(24, 22, 20, .55); backdrop-filter: blur(8px);
+  opacity: 0; transition: opacity .5s cubic-bezier(.77, 0, .18, 1);
+}
 .modal.show { opacity: 1; }
-.modal .box { width: min(920px, 100%); max-height: 92vh; overflow: auto; background: var(--panel-2); border: 1px solid rgba(255, 255, 255, .5); border-radius: 24px; padding: 30px; box-shadow: 0 40px 100px rgba(0, 0, 0, .45); transform: translateY(24px) scale(.97); transition: transform .45s cubic-bezier(.2, .8, .2, 1); }
-.modal.show .box { transform: none; }
+.modal .box {
+  --m-r: 24px;
+  width: min(920px, 100%); max-height: 92vh; overflow: auto; background: var(--panel-2);
+  border: 1px solid rgba(255, 255, 255, .5); border-radius: var(--m-r); padding: 30px;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, .45);
+  clip-path: inset(100% 0 0 0 round var(--m-r));
+  transform: translateY(28px);
+  transition: clip-path .65s cubic-bezier(.77, 0, .18, 1), transform .65s cubic-bezier(.77, 0, .18, 1);
+}
+.modal.show .box {
+  clip-path: inset(0 0 0 0 round var(--m-r));
+  transform: none;
+}
+.modal .box > * {
+  opacity: 0; transform: translateY(24px); transition: opacity .2s, transform .25s;
+}
+.modal.show .box > * {
+  opacity: 1; transform: none;
+  transition: opacity .6s cubic-bezier(.2, .8, .2, 1), transform .65s cubic-bezier(.2, .8, .2, 1);
+}
+.modal.show .box > :nth-child(1) { transition-delay: .28s; }
+.modal.show .box > :nth-child(2) { transition-delay: .36s; }
+.modal.show .box > :nth-child(3) { transition-delay: .44s; }
 .res-grid { display: grid; grid-template-columns: 300px 1fr; gap: 28px; }
 .ring { position: relative; width: 190px; height: 190px; margin: 0 auto 14px; }
 .ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
@@ -77,7 +102,44 @@
 .prog svg { width: 100%; height: 150px; display: block; }
 
 @media (max-width: 820px) {
-  .setup, .res-grid { grid-template-columns: 1fr; }
-  .modal .box { padding: 20px; }
-  .h-item { grid-template-columns: 54px 1fr; } .h-item .mini { display: none; }
+  .setup { grid-template-columns: 1fr; gap: 16px; }
+  .stage { border-radius: 14px; }
+  .hud { left: 8px; right: 8px; top: 8px; }
+  .chip-label { padding: 6px 12px; font-size: 10.5px; }
+  .timer { font-size: 24px; }
+  .fps { font-size: 9.5px; }
+  .alert { font-size: 12px; padding: 8px 14px; width: calc(100% - 20px); border-radius: 10px; bottom: 10px; }
+  .chips { gap: 6px; }
+  .chips button { padding: 8px 12px; font-size: 11px; }
+  .card.opts { padding: 18px 14px; border-radius: 16px; }
+  .row-btn { flex-direction: column; }
+  .row-btn .btn { width: 100%; }
+
+  /* modal hasil */
+  .modal { padding: 8px; }
+  .modal .box { padding: 18px 14px; border-radius: 18px; max-height: 94vh; width: 100%; }
+  .res-grid { grid-template-columns: 1fr; gap: 16px; }
+  .ring { width: 150px; height: 150px; margin-bottom: 8px; }
+  .ring b { font-size: 44px; }
+  .ring small { bottom: 28px; }
+  .verdict { font-size: 12px; margin-bottom: 12px; }
+  .modal .actions { flex-direction: column; gap: 8px; }
+  .modal .actions .btn { width: 100%; min-width: 0; height: 42px; margin: 0; }
+  .tg-box { flex-direction: column; text-align: center; padding: 14px; }
+
+  /* riwayat */
+  .h-item { grid-template-columns: 50px 1fr; gap: 12px; padding: 12px 14px; border-radius: 14px; }
+  .h-item .sc { font-size: 26px; }
+  .h-item .mini { display: none; }
+  .prog { padding: 14px 10px; border-radius: 14px; }
+  .prog svg { height: 120px; }
+}
+
+@media (max-width: 480px) {
+  .stage { aspect-ratio: 4 / 3; }
+  .chip-label { font-size: 9.5px; padding: 5px 10px; gap: 6px; }
+  .timer { font-size: 20px; }
+  .h-row { gap: 8px; margin-bottom: 14px; }
+  .page-title.sm { font-size: clamp(20px, 5.5vw, 28px); }
+  .lead { font-size: 12px; line-height: 1.6; }
 }
